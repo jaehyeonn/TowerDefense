@@ -77,15 +77,4 @@ public class Enemy : MonoBehaviour
         // EnemySpawner에게 본인이 삭제될 떄 필요한 처리를 하도록 DestroyEnemy() 함수 호출
         enemySpawner.DestroyEnemy(this);
     }
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

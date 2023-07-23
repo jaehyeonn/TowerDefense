@@ -6,6 +6,8 @@ public class TowerSpawner : MonoBehaviour
 {
     [SerializeField]
     private GameObject towerPrefab;
+    [SerializeField]
+    private EnemySpawner enemySpawner;  // 현재 맵에 존재하는 적 리스트 정보를 얻기 위해..
 
     public void SpawnTower(Transform tileTransform)
     {
@@ -20,17 +22,14 @@ public class TowerSpawner : MonoBehaviour
         //타워가 건설되어 있으므로 설정
         tile.IsBuildTower = true;
         // 선택한 타일의 위치에 타워 건설
-        Instantiate(towerPrefab, tileTransform.position, Quaternion.identity);
+        GameObject clone = Instantiate(towerPrefab, tileTransform.position, Quaternion.identity);
+        // 타워 무기에 enemySpawner 정보 전달
+        //clone.GetComponent<TowerSpawner>().Setup(enemySpawner);
+        TowerWeapon towerWeapon = clone.GetComponent<TowerWeapon>();
+        if (towerWeapon != null)
+        {
+            towerWeapon.Setup(enemySpawner);
+        }
     }
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    
 }

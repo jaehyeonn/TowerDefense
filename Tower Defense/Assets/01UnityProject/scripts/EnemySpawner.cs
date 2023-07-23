@@ -20,23 +20,20 @@ public class EnemySpawner : MonoBehaviour
         //적 리스트 메모리 할당
         enemyList = new List<Enemy>();
         //적 생성 코루틴 함수 호출
-        StartCoroutine(SpawnEnemy());
+        StartCoroutine("SpawnEnemy");
     }
 
     private IEnumerator SpawnEnemy()
     {
-        //int loopCount = 0; 무한루프 오류 고치기
         while(true)
         {
             GameObject clone = Instantiate(enemyPrefab);  //적 오브젝트 생성
             Enemy enemy = clone.GetComponent<Enemy>();    //방금 생성된 적의 enemy 컴포넌트
 
-            enemy.Setup(this, wayPoints);                       //waypoint  정보를 매개변수로 setup() 호출
+            enemy.Setup(this, wayPoints);                 //waypoint  정보를 매개변수로 setup() 호출
             enemyList.Add(enemy);                         //리스트에 방금 생성된 적 정보 저장
 
             yield return new WaitForSeconds(spawnTime);   //spawnTime 시간 동안 대기
-            //loopCount++;무한루프 오류 고치기
-            //Debug.LogFormat("loopCount {0}", loopCount);무한루프 오류 고치기
         }
     }
     
@@ -47,15 +44,5 @@ public class EnemySpawner : MonoBehaviour
         //적 오브젝트 삭제
         Destroy(enemy.gameObject);
     }
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    
 }
