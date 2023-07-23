@@ -4390,7 +4390,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 1945164230804817426, guid: cb104a8bbff55aa40a1512f905286613, type: 3}
-  spawnTime: 2
+  spawnTime: 0.05
   wayPoints:
   - {fileID: 1193538798}
   - {fileID: 1159131812}

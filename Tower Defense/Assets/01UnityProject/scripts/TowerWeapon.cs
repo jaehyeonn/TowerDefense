@@ -39,7 +39,7 @@ public class TowerWeapon : MonoBehaviour
 
     private void Update()
     {
-        if(attackTarget != null)
+        if (attackTarget != null)
         {
             RotateToTarget();
         }
@@ -60,23 +60,23 @@ public class TowerWeapon : MonoBehaviour
 
     private IEnumerator SearchTarget()
     {
-        while(true)
+        while (true)
         {
             // 제일 가까이 있는 적을 찾기 위해 최초 거리를 최대한 크게 설정
             float closestDistSqr = Mathf.Infinity;
             // EnemySpawner의 EnemyList 애 있는 현재 맵에 존재하는 모든 적 검사
-            for(int i =0; i< enemySpawner.EnemyList.Count; i++)
+            for (int i = 0; i < enemySpawner.EnemyList.Count; i++)
             {
                 float distance = Vector3.Distance(enemySpawner.EnemyList[i].transform.position, transform.position);
                 // 현재 검사중인 적과의 거리가 공격범위 내에 있고, 현재까지 검사한 적보다 거리가 가까우면
-                if(distance <= attackRange && distance <= closestDistSqr)
+                if (distance <= attackRange && distance <= closestDistSqr)
                 {
                     closestDistSqr = distance;
                     attackTarget = enemySpawner.EnemyList[i].transform;
                 }
             }
 
-            if( attackTarget != null)
+            if (attackTarget != null)
             {
                 ChangeState(WeaponState.AttackToTarget);
             }
@@ -87,7 +87,7 @@ public class TowerWeapon : MonoBehaviour
 
     private IEnumerator AttackToTarget()
     {
-        while(true)
+        while (true)
         {
             // 1. target이 있는지 검사 (다른 발사체에 의해 제거, Goal 지점까지 이동해 삭제 등)
             if (attackTarget == null)                   //attackTarget이 null이면 SerachTarget으로 변경
@@ -98,7 +98,7 @@ public class TowerWeapon : MonoBehaviour
 
             // 2. target이 공격 범위 안에 있는지 검사 (공격 범위를 벗어나면 새로운 적 탐색)
             float distance = Vector3.Distance(attackTarget.position, transform.position);
-            if(distance > attackRange)                  // 적이 타워의 공격 범위를 벗어나도 SearchTarget으로 변경
+            if (distance > attackRange)                  // 적이 타워의 공격 범위를 벗어나도 SearchTarget으로 변경
             {
                 attackTarget = null;
                 ChangeState(WeaponState.SearchTarget);
@@ -115,6 +115,8 @@ public class TowerWeapon : MonoBehaviour
 
     private void SpawnProjectile()
     {
-        Instantiate(projectilePrefab, spawnPoint.position, Quaternion.identity);
+        GameObject clone = Instantiate(projectilePrefab, spawnPoint.position, Quaternion.identity);
+        // 생성된 발사체에게 공격대상 (attackTarget) 정보 제공
+        clone.GetComponent<Projectile>().Setup(attackTarget);
     }
 }
