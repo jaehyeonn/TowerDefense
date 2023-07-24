@@ -15,6 +15,8 @@ public class TowerWeapon : MonoBehaviour
     private float attackRate = 0.5f;                             // 공격 속도
     [SerializeField]
     private float attackRange = 2.0f;                            // 공격 범위
+    [SerializeField]
+    private int attackDamage = 1;                                // 공격력
     private WeaponState weaponState = WeaponState.SearchTarget;  // 타워 무기의 상태
     private Transform attackTarget = null;                       // 공격 대상
     private EnemySpawner enemySpawner;                           // 게임에 존재하는 적 정보 흭득용
@@ -37,26 +39,26 @@ public class TowerWeapon : MonoBehaviour
         StartCoroutine(weaponState.ToString());
     }
 
-    private void Update()
-    {
-        if (attackTarget != null)
-        {
-            RotateToTarget();
-        }
-    }
+    //private void Update()
+    //{
+    //    if (attackTarget != null)
+    //    {
+    //        RotateToTarget();
+    //    }
+    //}
 
-    private void RotateToTarget()
-    {
-        // 원점으로부터의 거리와 수평축으롭터의 각도를 이용해 위치를 구하는 극 좌표계 이용
-        // 각도 = arctan(y/x)
-        // x, y 범위값 구하기
-        float dx = attackTarget.position.x - transform.position.x;
-        float dy = attackTarget.position.y - transform.position.y;
-        // x, y 변위값을 바탕으로 각도 구하기
-        // 각도가 radian 단위이기 때문에 Mathf.Rad2Deg를 곱해 도 단위를 구함
-        float degree = Mathf.Atan2(dy, dx) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(0, 0, degree);
-    }
+    //private void RotateToTarget()
+    //{
+    //    // 원점으로부터의 거리와 수평축으로부터터의 각도를 이용해 위치를 구하는 극 좌표계 이용
+    //    // 각도 = arctan(y/x)
+    //    // x, y 범위값 구하기
+    //    float dx = attackTarget.position.x - transform.position.x;
+    //    float dy = attackTarget.position.y - transform.position.y;
+    //    // x, y 변위값을 바탕으로 각도 구하기
+    //    // 각도가 radian 단위이기 때문에 Mathf.Rad2Deg를 곱해 도 단위를 구함
+    //    float degree = Mathf.Atan2(dy, dx) * Mathf.Rad2Deg;
+    //    transform.rotation = Quaternion.Euler(0, 0, degree);
+    //}
 
     private IEnumerator SearchTarget()
     {
@@ -117,6 +119,6 @@ public class TowerWeapon : MonoBehaviour
     {
         GameObject clone = Instantiate(projectilePrefab, spawnPoint.position, Quaternion.identity);
         // 생성된 발사체에게 공격대상 (attackTarget) 정보 제공
-        clone.GetComponent<Projectile>().Setup(attackTarget);
+        clone.GetComponent<Projectile>().Setup(attackTarget, attackDamage);
     }
 }
