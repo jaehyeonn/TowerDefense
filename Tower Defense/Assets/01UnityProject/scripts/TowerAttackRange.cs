@@ -4,10 +4,6 @@ using UnityEngine;
 
 public class TowerAttackRange : MonoBehaviour
 {    // 공격 범위의 활성 비활성격
-    private void Awake()
-    {
-        OffAttackRange();
-    }
 
     public void OnAttackRange(Vector3 position, float range)
     {
