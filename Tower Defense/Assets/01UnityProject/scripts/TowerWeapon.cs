@@ -20,6 +20,7 @@ public class TowerWeapon : MonoBehaviour
     private SpriteRenderer spriteRenderer;                       // 타워 오브젝트 이미지 변경용
     private EnemySpawner enemySpawner;                           // 게임에 존재하는 적 정보 흭득용
     private PlayerGold playerGold;                               // 플레이어의 골드 정보 흭득 및 설정
+    private Tile ownerTile;                                       // 현재 타워가 배치되어 있는 타일
 
     public Sprite TowerSprite => towerTemplate.weapon[level].sprite;
     public float Damage => towerTemplate.weapon[level].damage;
@@ -28,11 +29,12 @@ public class TowerWeapon : MonoBehaviour
     public int Level => level + 1;
     public int MaxLevel => towerTemplate.weapon.Length;
 
-    public void Setup(EnemySpawner enemySpawner, PlayerGold playerGold)
+    public void Setup(EnemySpawner enemySpawner, PlayerGold playerGold, Tile ownerTile)
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         this.enemySpawner = enemySpawner;
         this.playerGold = playerGold;
+        this.ownerTile = ownerTile;
 
         //최초 상태를 WeaponState.SearchTarget 으로 설정
         ChangeState(WeaponState.SearchTarget);
@@ -147,5 +149,15 @@ public class TowerWeapon : MonoBehaviour
         playerGold.CurrentGold -= towerTemplate.weapon[level].cost;
 
         return true;
+    }
+
+    public void Sell()
+    {
+        // 골드 증가
+        playerGold.CurrentGold += towerTemplate.weapon[level].sell;
+        // 현재 타일에 다시 타워 건설이 가능하도록 설정
+        ownerTile.IsBuildTower = false;
+        // 타워 파괴
+        Destroy(gameObject);
     }
 }

@@ -21,6 +21,8 @@ public class TowerDataViewer : MonoBehaviour
     private TowerAttackRange towerAttackRange;
     [SerializeField]
     private Button buttonUpgrade;  // 타워 업글이 최대가 되면 버튼 비활성화
+    [SerializeField]
+    private SystemTextViewer systemTextViewer;
 
     private TowerWeapon currentTower;
 
@@ -72,7 +74,7 @@ public class TowerDataViewer : MonoBehaviour
     
     public void OnClickEventTowerUpgrade()
     {
-        // 타워 업ㄱ레이드 시도 (성공:true, 실패:false)
+        // 타워 업그레이드 시도 (성공:true, 실패:false)
         bool isSuccess = currentTower.Upgrade();
 
         if(isSuccess == true)
@@ -85,6 +87,15 @@ public class TowerDataViewer : MonoBehaviour
         else
         {
             // 타워 업글에 필요한 비용이 부족하다고 출력
+            systemTextViewer.PrintText(SystemType.Money);
         }
+    }
+
+    public void OnClickEventTowerSell()
+    {
+        // 타워 판매
+        currentTower.Sell();
+        // 선택한 타워가 사라져서 Panel, 공격범위 Off
+        OffPanel();
     }
 }
